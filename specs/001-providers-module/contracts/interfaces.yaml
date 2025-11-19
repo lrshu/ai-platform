@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  title: Providers Module Interfaces
+  description: API contracts for the Providers Module capability interfaces
+  version: 1.0.0
+
+paths:
+  # This file defines the interfaces rather than HTTP endpoints
+  # as these are internal Python interfaces, not REST APIs
+
+components:
+  schemas:
+    # ITextGenerator Interface
+    TextGenerationRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+          description: The prompt to send to the LLM
+        max_tokens:
+          type: integer
+          description: Maximum number of tokens to generate
+          default: 1000
+        temperature:
+          type: number
+          format: float
+          description: Sampling temperature
+          default: 0.7
+        top_p:
+          type: number
+          format: float
+          description: Top-p sampling parameter
+          default: 0.9
+      required:
+        - prompt
+
+    TextGenerationResponse:
+      type: object
+      properties:
+        generated_text:
+          type: string
+          description: The generated text
+        finish_reason:
+          type: string
+          description: Reason why generation stopped
+        usage:
+          type: object
+          description: Information about token usage
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+
+    # IEmbedder Interface
+    EmbeddingRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text to embed
+        model:
+          type: string
+          description: The model to use for embedding
+      required:
+        - text
+
+    EmbeddingResponse:
+      type: object
+      properties:
+        embeddings:
+          type: array
+          items:
+            type: number
+            format: float
+          description: List of embedding vectors
+        model:
+          type: string
+          description: The model used for embedding
+        usage:
+          type: object
+          description: Information about token usage
+          properties:
+            prompt_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+
+    # IReranker Interface
+    RerankRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: The original query
+        documents:
+          type: array
+          items:
+            type: string
+          description: List of documents to rerank
+        top_n:
+          type: integer
+          description: Number of top results to return
+      required:
+        - query
+        - documents
+
+    RerankResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              document:
+                type: string
+              score:
+                type: number
+                format: float
+            required:
+              - document
+              - score
+          description: List of reranked results with scores
+        model:
+          type: string
+          description: The model used for reranking
+
+    # IDocumentParser Interface
+    DocumentParseRequest:
+      type: object
+      properties:
+        document_content:
+          type: string
+          format: binary
+          description: The document content to parse
+        document_type:
+          type: string
+          description: The type of document (PDF, image, etc.)
+      required:
+        - document_content
+        - document_type
+
+    DocumentParseResponse:
+      type: object
+      properties:
+        extracted_text:
+          type: string
+          description: The text extracted from the document
+        metadata:
+          type: object
+          description: Additional metadata about the document
