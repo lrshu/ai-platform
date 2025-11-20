@@ -31,46 +31,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Based on the Modular RAG AI Knowledge Base Platform Constitution (v1.2.0):
-
-1. **Pipeline Architecture Compliance**:
-   - Implementation MUST follow the six-stage pipeline with specific responsibilities:
-     * Indexing: Parse → Chunk → Embed → Store (Graph + Vector)
-     * Pre-Retrieval: Query understanding and rewriting (HyDE, Query Expansion)
-     * Retrieval: Multi-path recall (Hybrid Search)
-     * Post-Retrieval: Context optimization (Rerank, Selection)
-     * Generation: Prompt assembly and LLM reasoning
-     * Orchestration: Dynamic module scheduling controlled by user requests
-   - Direct calls to underlying logic that bypass core abstractions are PROHIBITED
-   - Each stage MUST be independently testable with clear boundaries
-
-2. **Technology Stack Compliance**:
-   - Runtime: Python 3.12+ MUST be used
-   - Dependency Manager: uv MUST be used
-   - Web Framework: FastAPI 全异步模式 with async/await MUST be used
-   - Data Validation: Pydantic V2 MUST be used
-   - Database (Vector + Graph): Memgraph MUST be used
-   - Model Provider (Primary): Aliyun Bailian (Qwen/DashScope) MUST be used
-   - LLM Models: Qwen-Turbo/Plus/Max MUST be used
-   - Embedding Model: text-embedding-v4 MUST be used
-   - Rerank Model: gte-rerank MUST be used
-   - Doc Parsing Provider: Mineru API MUST be used
-
-3. **Provider Abstraction and Modular Design Compliance**:
-   - External services MUST be defined as capability providers implementing specific capability interfaces
-   - Capability Interfaces: ITextGenerator, IEmbedder, IReranker, IDocumentParser
-   - Each pipeline stage MUST be encapsulated as an independent class following the single responsibility principle
-   - Components MUST be orchestrated through a central Orchestrator
-   - Direct coupling between stages is PROHIBITED
-
-4. **Documentation First Compliance**:
-   - Core functions MUST include Google-style docstrings with comprehensive type hints
-   - Public APIs and service interfaces MUST be documented with clear examples
-
-5. **Configuration Management Compliance**:
-   - All configuration MUST be loaded through a config.json5 file
-   - Sensitive API Keys MUST be overridden or loaded through environment variables at runtime
-   - Core RAG logic MUST dynamically obtain required capability provider instances through configuration
+[Gates determined based on constitution file]
 
 ## Project Structure
 

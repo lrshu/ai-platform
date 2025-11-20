@@ -80,33 +80,20 @@
 <!--
   ACTION REQUIRED: The content in this section represents placeholders.
   Fill them out with the right functional requirements.
-
-  NOTE: As per the Documentation First principle from the constitution, core functions
-  MUST include Google-style docstrings with comprehensive type hints, and all requirements
-  MUST include clear descriptions of expected behavior and implementation guidance.
-
-  NOTE: As per the Bilingual Documentation principle from the constitution, all specifications
-  MUST be provided in both Chinese and English, with Chinese as the primary language.
 -->
 
 ### Functional Requirements
 
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"] with clear validation and error handling
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"] using established validation patterns
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"] through a documented and tested workflow
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"] with appropriate backup and recovery mechanisms
-- **FR-005**: System MUST [behavior, e.g., "log all security events"] in a structured format for audit purposes
+- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
+- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
+- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
+- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
+- **FR-005**: System MUST [behavior, e.g., "log all security events"]
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?] with detailed security requirements
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified] with compliance considerations
-
-### Modular RAG Pipeline Requirements
-
-- **FR-008**: System MUST implement the six-stage RAG pipeline as defined in the constitution
-- **FR-009**: Each pipeline stage MUST be independently testable and configurable
-- **FR-010**: Pipeline components MUST communicate through well-defined interfaces
+- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
+- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
 ### Key Entities *(include if feature involves data)*
 
