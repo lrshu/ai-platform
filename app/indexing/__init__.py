@@ -1,0 +1,1 @@
+"""Indexing module for RAG backend implementation."""

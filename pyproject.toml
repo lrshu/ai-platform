@@ -1,0 +1,46 @@
+[project]
+name = "ai-platform"
+version = "0.1.0"
+description = "RAG Backend Implementation"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dashscope>=1.25.1",
+    "fastapi>=0.121.3",
+    "gqlalchemy>=1.8.0",
+    "json5>=0.12.1",
+    "mineru>=2.6.4",
+    "pydantic>=2.12.4",
+    "python-dotenv>=1.2.1",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.11.0",
+    "mypy>=1.18.2",
+    "pytest>=9.0.1",
+    "ruff>=0.14.5",
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+python_files = "*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

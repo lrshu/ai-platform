@@ -18,20 +18,26 @@
 -->
 
 **Language/Version**: Python 3.12+
-**Primary Dependencies**: FastAPI, Pydantic V2, uv
-**Storage**: Memgraph
+**Primary Dependencies**: FastAPI, Pydantic V2, Memgraph, Qwen/DashScope SDK
+**Storage**: Memgraph (Graph + Vector)
 **Testing**: pytest
 **Target Platform**: Linux server
-**Project Type**: web (backend focused RAG platform)
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Project Type**: RAG backend (follows Modular RAG paradigm)
+**Performance Goals**: [NEEDS CLARIFICATION]
+**Constraints**: [NEEDS CLARIFICATION]
+**Scale/Scope**: [NEEDS CLARIFICATION]
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+For all RAG backend implementations, verify compliance with the [RAG Backend Platform Constitution](../../memory/constitution.md):
+
+1. ✅ **Modular Architecture**: Does the design follow the six standardized pipeline stages?
+2. ✅ **Provider Abstraction**: Are external services implemented as capability providers?
+3. ✅ **Configuration-Driven**: Does the implementation use config.json5 for configuration?
+4. ✅ **Documentation Standards**: Are Google-style Docstrings with Type Hints included?
+5. ✅ **Directory Structure**: Does the implementation follow the prescribed directory structure?
 
 ## Project Structure
 
@@ -48,46 +54,37 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
-backend/
-├── app/
-│   ├── api/                # API Gateway & Endpoints
-│   ├── common/             # Core Infrastructure
-│   │   ├── interfaces/     # Abstract Base Classes
-│   │   │   ├── database.py
-│   │   │   ├── generator.py
-│   │   │   ├── embedder.py
-│   │   │   ├── reranker.py
-│   │   │   ├── parser.py
-│   │   ├── config_loader.py
-│   │   ├── models.py       # Shared Pydantic Models
-│   │   ├── utils.py
-│   ├── database/           # Memgraph Implementation
-│   ├── indexing/           # Indexing Logic
-│   ├── retrieval/          # Retrieval Logic (Pre & Core)
-│   ├── post_retrieval/     # Post-Retrieval Logic
-│   ├── generation/         # Generation Logic
-│   ├── providers/          # External Service Providers
-│   ├── orchestration/      # Pipeline & Orchestrator
-├── config.json5            # Main Configuration
-├── pyproject.toml
-└── main.py
-
+app/
+├── api/                 # API Gateway & Endpoints
+├── common/              # Core Infrastructure
+│   ├── interfaces/      # Abstract Base Classes
+│   │   ├── database.py
+│   │   ├── generator.py
+│   │   ├── embedder.py
+│   │   ├── reranker.py
+│   │   ├── parser.py
+│   ├── config_loader.py
+│   ├── models.py        # Shared Pydantic Models
+│   ├── utils.py
+├── database/            # Memgraph Implementation
+├── indexing/            # Indexing Logic
+├── retrieval/           # Retrieval Logic (Pre & Core)
+├── post_retrieval/      # Post-Retrieval Logic
+├── generation/          # Generation Logic
+├── providers/           # External Service Providers
+├── orchestration/       # Pipeline & Orchestrator
 tests/
 ├── contract/
 ├── integration/
 └── unit/
+config.json5             # Main Configuration
+pyproject.toml
+main.py
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: RAG backend implementation following the prescribed directory structure from the constitution.
 
 ## Complexity Tracking
 

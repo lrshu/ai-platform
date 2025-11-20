@@ -1,0 +1,42 @@
+// 应用配置示例 (使用 JSON5 格式，支持注释)
+{
+  // 数据库配置
+  "database": {
+    "uri": "bolt://localhost:7687",
+    "user": "memgraph",
+    "password": "password"
+  },
+
+  // 核心 RAG 流水线能力配置 (定义每个能力使用的 Provider 和 Model/Version)
+  "pipeline_capabilities": {
+    // Embedding 能力配置
+    "embedder": {
+      "provider": "Qwen",
+      "name": "text-embedding-v4" // 统一键名
+    },
+    // LLM Generator/HyDE/Expansion 能力配置
+    "generator": {
+      "provider": "Qwen",
+      "name": "qwen-plus" // 统一键名
+    },
+    // Rerank 能力配置
+    "reranker": {
+      "provider": "Qwen",
+      "name": "gte-rerank" // 统一键名
+    },
+    // 文档解析能力配置
+    "parser": {
+      "provider": "Mineru",
+      "name": "v1" // 统一键名 (原 api_version)
+    }
+  },
+
+  // 具体的 Provider 实现类映射 (用于运行时反射实例化)
+  "provider_map": {
+    // 路径已更新，指向 app/providers 模块
+    "Qwen": "app.providers.qwen_provider.QwenProvider",
+    "Mineru": "app.providers.mineru_provider.MineruProvider"
+  }
+
+  // 注意: 'module_toggles' 已移除，该配置由 API 请求动态传入
+}

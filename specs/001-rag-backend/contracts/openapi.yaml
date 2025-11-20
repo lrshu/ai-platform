@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: RAG Backend API
+  description: API for Retrieval-Augmented Generation backend system
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+paths:
+  /api/rag/search:
+    post:
+      summary: Perform RAG search and generation
+      description: Submit a query to search indexed documents and generate an answer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Successful response with streaming tokens
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-Sent Events stream of generated tokens
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/rag/indexing:
+    post:
+      summary: Trigger document indexing
+      description: Start the indexing process for specified documents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexingRequest'
+      responses:
+        '202':
+          description: Indexing started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexingResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    SearchRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: The natural language query
+          example: "What are the key features of the RAG backend?"
+        use_hyde:
+          type: boolean
+          description: Enable HyDE query expansion
+          default: false
+        use_rerank:
+          type: boolean
+          description: Enable reranking of results
+          default: false
+        top_k:
+          type: integer
+          description: Number of top results to return
+          minimum: 1
+          maximum: 100
+          default: 10
+        top_p:
+          type: number
+          format: float
+          description: Nucleus sampling parameter
+          minimum: 0
+          maximum: 1
+          default: 0.9
+        temperature:
+          type: number
+          format: float
+          description: Temperature for generation
+          minimum: 0
+          maximum: 2
+          default: 0.7
+    IndexingRequest:
+      type: object
+      required:
+        - document_urls
+      properties:
+        document_urls:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: URLs of documents to index
+          example: ["http://example.com/document.pdf"]
+        collection_name:
+          type: string
+          description: Name of the collection to index documents into
+          default: "default"
+    IndexingResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+          description: Identifier for the indexing job
+        status:
+          type: string
+          description: Status of the indexing job
+          enum: [started, processing, completed, failed]
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
