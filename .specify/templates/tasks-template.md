@@ -20,10 +20,9 @@ description: "Task list template for feature implementation"
 
 ## Path Conventions
 
-- **Single project**: `src/`, `tests/` at repository root
-- **Web app**: `backend/src/`, `frontend/src/`
-- **Mobile**: `api/src/`, `ios/src/` or `android/src/`
-- Paths shown below assume single project - adjust based on plan.md structure
+- **RAG Backend**: `backend/app/`, `tests/` at repository root
+- **Configuration**: `config.json5`, `pyproject.toml` at repository root
+- Paths shown below assume RAG backend structure - adjust based on plan.md structure
 
 <!-- 
   ============================================================================
@@ -49,8 +48,8 @@ description: "Task list template for feature implementation"
 **Purpose**: Project initialization and basic structure
 
 - [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize [language] project with [framework] dependencies
-- [ ] T003 [P] Configure linting and formatting tools
+- [ ] T002 Initialize Python project with FastAPI dependencies using uv
+- [ ] T003 [P] Configure linting and formatting tools (black, flake8, isort)
 
 ---
 
@@ -62,12 +61,16 @@ description: "Task list template for feature implementation"
 
 Examples of foundational tasks (adjust based on your project):
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
+- [ ] T004 Setup Memgraph database schema and connection
+- [ ] T005 [P] Implement database interface in backend/app/common/interfaces/database.py
+- [ ] T006 [P] Implement generator interface in backend/app/common/interfaces/generator.py
+- [ ] T007 [P] Implement embedder interface in backend/app/common/interfaces/embedder.py
+- [ ] T008 [P] Implement reranker interface in backend/app/common/interfaces/reranker.py
+- [ ] T009 [P] Implement parser interface in backend/app/common/interfaces/parser.py
+- [ ] T010 Setup configuration loader in backend/app/common/config_loader.py
+- [ ] T011 Create base models in backend/app/common/models.py
+- [ ] T012 Configure error handling and logging infrastructure
+- [ ] T013 Setup environment configuration management
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -88,10 +91,10 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T012 [P] [US1] Create [Entity1] model in backend/app/common/models/[entity1].py
+- [ ] T013 [P] [US1] Create [Entity2] model in backend/app/common/models/[entity2].py
+- [ ] T014 [US1] Implement [Service] in backend/app/[module]/services/[service].py (depends on T012, T013)
+- [ ] T015 [US1] Implement [endpoint/feature] in backend/app/api/[file].py
 - [ ] T016 [US1] Add validation and error handling
 - [ ] T017 [US1] Add logging for user story 1 operations
 
@@ -112,9 +115,9 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
-- [ ] T021 [US2] Implement [Service] in src/services/[service].py
-- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T020 [P] [US2] Create [Entity] model in backend/app/common/models/[entity].py
+- [ ] T021 [US2] Implement [Service] in backend/app/[module]/services/[service].py
+- [ ] T022 [US2] Implement [endpoint/feature] in backend/app/api/[file].py
 - [ ] T023 [US2] Integrate with User Story 1 components (if needed)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
@@ -134,9 +137,9 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Implementation for User Story 3
 
-- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
-- [ ] T027 [US3] Implement [Service] in src/services/[service].py
-- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T026 [P] [US3] Create [Entity] model in backend/app/common/models/[entity].py
+- [ ] T027 [US3] Implement [Service] in backend/app/[module]/services/[service].py
+- [ ] T028 [US3] Implement [endpoint/feature] in backend/app/api/[file].py
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -151,11 +154,12 @@ Examples of foundational tasks (adjust based on your project):
 **Purpose**: Improvements that affect multiple user stories
 
 - [ ] TXXX [P] Documentation updates in docs/
-- [ ] TXXX Code cleanup and refactoring
+- [ ] TXXX Code cleanup and refactoring to meet Google-style Docstring standards
 - [ ] TXXX Performance optimization across all stories
 - [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
+- [ ] TXXX Verify all core functions have Type Hints
 
 ---
 

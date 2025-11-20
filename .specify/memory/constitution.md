@@ -1,50 +1,82 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- Sync Impact Report:
+Version change: 1.0.0
+Modified principles: None (initial version)
+Added sections: All sections (initial version)
+Removed sections: None
+Templates requiring updates:
+- .specify/templates/plan-template.md ✅ updated
+- .specify/templates/spec-template.md ✅ updated
+- .specify/templates/tasks-template.md ✅ updated
+Deferred items: None
+-->
+
+# RAG Backend Platform Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Modular Architecture
+The system must be built with a highly modular, decoupled, and observable architecture. The system architecture strictly follows the "Modular RAG" paradigm, standardizing the processing pipeline into six stages.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Standardized Pipeline Stages
+All data flows must go through the following standardized stages, and skipping core abstractions to directly call underlying logic is strictly prohibited:
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+1. Indexing (Parsing → Chunking → Embedding → Storage (Graph + Vector))
+2. Pre-Retrieval (Query Understanding and Rewriting)
+3. Retrieval (Multi-path Recall)
+4. Post-Retrieval (Context Optimization)
+5. Generation (Prompt Assembly and LLM Reasoning)
+6. Orchestration (Dynamic Module Scheduling)
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### III. Technology Stack Requirements
+Runtime: Python 3.12+
+Dependency Management: uv (replacing pip/poetry for maximum speed)
+Web Framework: FastAPI with full async/await pattern
+Validation: Pydantic V2 for data validation and model definition
+Database: Memgraph leveraging its Graph & Vector capabilities
+LLM Provider: Aliyun Bailian (DashScope) as the primary model service provider
+Models: Qwen-Turbo/Plus/Max for generation and knowledge extraction
+Embedding: text-embedding-v4 for vectorization
+Reranking: gte-rerank
+Parsing: Mineru API document parsing service
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### IV. Provider Abstraction and Dependency Injection
+External services must be defined as capability providers implementing specific capability interfaces. Core RAG logic depends only on interfaces. Modules must receive interface instances and specific model names specified in configuration through dependency injection.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### V. Code Quality Standards
+Core functions must include Google-style Docstrings and Type Hints. All code must follow consistent formatting and style guidelines.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Unified Directory Structure
+The project follows a unified directory structure:
+```
+backend/
+├── app/
+│   ├── api/                # API Gateway & Endpoints
+│   ├── common/             # Core Infrastructure
+│   │   ├── interfaces/     # Abstract Base Classes
+│   │   │   ├── database.py
+│   │   │   ├── generator.py
+│   │   │   ├── embedder.py
+│   │   │   ├── reranker.py
+│   │   │   ├── parser.py
+│   │   ├── config_loader.py
+│   │   ├── models.py       # Shared Pydantic Models
+│   │   ├── utils.py
+│   ├── database/           # Memgraph Implementation
+│   ├── indexing/           # Indexing Logic
+│   ├── retrieval/          # Retrieval Logic (Pre & Core)
+│   ├── post_retrieval/     # Post-Retrieval Logic
+│   ├── generation/         # Generation Logic
+│   ├── providers/          # External Service Providers
+│   ├── orchestration/      # Pipeline & Orchestrator
+├── config.json5            # Main Configuration
+├── pyproject.toml
+└── main.py
+```
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Development Workflow
+All development must follow the Speckit methodology with specification, planning, and task-based implementation. Features are developed with prioritized user stories that can be independently tested and deployed. Code reviews are mandatory for all changes, with special attention to constitutional compliance.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+Constitution supersedes all other practices. Amendments require documentation, approval, and migration plan. All PRs/reviews must verify constitutional compliance. Versioning follows semantic versioning rules with MAJOR for backward incompatible changes, MINOR for new principles, and PATCH for clarifications.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-11-20 | **Last Amended**: 2025-11-20
