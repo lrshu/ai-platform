@@ -6,19 +6,37 @@ Supports JSON5 format with comments and environment variable overrides.
 import os
 from typing import Any, Dict
 import json5
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Find the config file in the project root
+def find_config_file():
+    """Find the config.json5 file in the project root."""
+    # Start from current directory and go up until we find config.json5
+    current_dir = os.getcwd()
+    while current_dir != '/':
+        config_path = os.path.join(current_dir, 'config.json5')
+        if os.path.exists(config_path):
+            return config_path
+        current_dir = os.path.dirname(current_dir)
+
+    # If not found, try the default location
+    return 'config.json5'
 
 
 class ConfigLoader:
     """Load and manage application configuration."""
 
-    def __init__(self, config_file: str = "config.json5"):
+    def __init__(self, config_file: str = None):
         """
         Initialize the configuration loader.
 
         Args:
-            config_file: Path to the configuration file
+            config_file: Path to the configuration file. If None, will search for it.
         """
-        self.config_file = config_file
+        self.config_file = config_file or find_config_file()
         self.config = self._load_config()
 
     def _load_config(self) -> Dict[str, Any]:

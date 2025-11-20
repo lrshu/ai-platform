@@ -7,8 +7,12 @@ import logging
 from typing import List, Dict, Any
 from pathlib import Path
 from app.common.factory import provider_factory
+from app.common.config_loader import config_loader
 from app.common.models import Chunk, Entity, Relationship
 from app.indexing.chunker import Chunker
+
+# Import database implementation directly since it's not a swappable capability
+from app.database.memgraph_db import MemgraphDB
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -21,11 +25,12 @@ class IndexingOrchestrator:
         """Initialize the indexing orchestrator."""
         self.parser = provider_factory.create_parser_provider()
         self.embedder = provider_factory.create_embedder_provider()
-        self.database = provider_factory.create_database_provider()
+        # Create database directly since it's not a swappable capability
+        self.database = MemgraphDB()
         self.chunker = Chunker()
+        self._database_connected = False
 
-        # Connect to database
-        asyncio.create_task(self._connect_database())
+        # Note: Database connection is deferred until first use to avoid event loop issues
 
     async def _connect_database(self):
         """Connect to the database."""
@@ -35,6 +40,12 @@ class IndexingOrchestrator:
         except Exception as e:
             logger.error(f"Failed to connect to database: {e}")
             raise
+
+    async def _ensure_database_connected(self):
+        """Ensure database is connected before use."""
+        if not self._database_connected:
+            await self._connect_database()
+            self._database_connected = True
 
     async def index_document(self, document_path: Path, collection_name: str = "default") -> Dict[str, Any]:
         """
@@ -194,6 +205,9 @@ class IndexingOrchestrator:
             relationships: Relationships to store
             collection_name: Name of the collection
         """
+        # Ensure database is connected
+        await self._ensure_database_connected()
+
         # Store parent chunks with embeddings
         for chunk in parent_chunks:
             await self.database.store_vector(
@@ -202,7 +216,7 @@ class IndexingOrchestrator:
                 {
                     "chunk_id": chunk.id,
                     "content": chunk.content,
-                    "metadata": chunk.metadata.dict()
+                    "metadata": chunk.metadata.model_dump()
                 }
             )
 
@@ -214,7 +228,7 @@ class IndexingOrchestrator:
                 {
                     "chunk_id": chunk.id,
                     "content": chunk.content,
-                    "metadata": chunk.metadata.dict()
+                    "metadata": chunk.metadata.model_dump()
                 }
             )
 
