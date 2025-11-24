@@ -1,37 +1,37 @@
-# Implementation Plan: RAG Backend Implementation
+# Implementation Plan: RAG Backend System
 
-**Branch**: `001-rag-backend` | **Date**: 2025-11-20 | **Spec**: [/specs/001-rag-backend/spec.md](/specs/001-rag-backend/spec.md)
+**Branch**: `001-rag-backend` | **Date**: 2025-11-24 | **Spec**: [spec.md](./spec.md)
+
 **Input**: Feature specification from `/specs/001-rag-backend/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary
 
-This plan outlines the implementation of a Retrieval-Augmented Generation (RAG) backend system that follows the Modular RAG paradigm with six standardized pipeline stages. The system will provide document indexing, search and retrieval capabilities, and answer generation using Qwen models and Memgraph for storage. The implementation will follow a modular architecture with provider abstractions for external services. The plan is organized into 5 key milestones that progressively build a complete RAG system from basic document processing to a production-ready solution with advanced features.
+This plan outlines the implementation of a Retrieval-Augmented Generation (RAG) backend system with a standardized pipeline including Indexing, Pre-Retrieval, Retrieval, Post-Retrieval, Generation, and Orchestration components. The system will process PDF documents through an indexing pipeline, store content as vectors and knowledge graphs in Memgraph, and provide search and conversational question-answering capabilities using LangChain, Qwen3-Max LLM, and DashScope services.
 
 ## Technical Context
 
 **Language/Version**: Python 3.12+
-**Primary Dependencies**: FastAPI, Pydantic V2, Memgraph (python-memgraph), DashScope SDK, Mineru API client
-**Storage**: Memgraph (Graph + Vector) with MAGE for vector search and Fulltext Index for keyword search
-**Testing**: pytest with unit, integration, and contract tests
+**Primary Dependencies**: LangChain (Core), Memgraph (with neo4j driver), Qwen3-Max, DashScopeRerank
+**Storage**: Memgraph with neo4j
+**Testing**: pytest
 **Target Platform**: Linux server
-**Project Type**: RAG backend (follows Modular RAG paradigm)
-**Performance Goals**: Index 100 pages per minute with 95%+ entity extraction accuracy; Search queries return results in under 500ms for 95% of requests; Handle 100 concurrent search requests
-**Constraints**: Must use configuration-driven architecture with environment variable overrides for sensitive data; Must implement Small-to-Big chunking strategy; Must support streaming responses
-**Scale/Scope**: Initial implementation supporting PDF document indexing and search with Qwen-Turbo/Plus/Max models
+**Project Type**: single - command-line interface application
+**Performance Goals**: Indexing: 30 seconds per 10-page document, Search: <2 seconds response time
+**Constraints**: <200ms API response for 95th percentile, <50ms database queries for 95th percentile
+**Scale/Scope**: Handle 10 concurrent indexing operations, support conversational context preservation
+
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-For all RAG backend implementations, verify compliance with the [RAG Backend Platform Constitution](../../memory/constitution.md):
-
-1. ✅ **Modular Architecture**: Does the design follow the six standardized pipeline stages?
-2. ✅ **Provider Abstraction**: Are external services implemented as capability providers?
-3. ✅ **Configuration-Driven**: Does the implementation use config.json5 for configuration?
-4. ✅ **Documentation Standards**: Are Google-style Docstrings with Type Hints included?
-5. ✅ **Directory Structure**: Does the implementation follow the prescribed directory structure?
+- [x] I. Code Quality Standards: All code follows type hinting, docstring, and style guidelines - Python with PEP 8, Google-style docstrings for all public interfaces
+- [x] II. Comprehensive Testing Standards: Test coverage and testing approach defined - pytest for unit tests (80% coverage), integration tests for pipeline components, contract tests for CLI interface
+- [x] III. User Experience Consistency: Consistent API and interface design planned - Consistent error messages, standardized command-line interface, clear documentation
+- [x] IV. Performance Requirements: Performance benchmarks and scaling approach defined - Indexing under 30 seconds, search under 2 seconds, Memgraph query optimization
+- [x] V. Observability and Monitoring: Logging, metrics, and tracing strategy defined - Structured logging with context, performance metrics for each pipeline stage
 
 ## Project Structure
 
@@ -50,85 +50,27 @@ specs/001-rag-backend/
 ### Source Code (repository root)
 
 ```text
-app/
-├── api/                 # API Gateway & Endpoints
-├── common/              # Core Infrastructure
-│   ├── interfaces/      # Abstract Base Classes
-│   │   ├── database.py
-│   │   ├── generator.py
-│   │   ├── embedder.py
-│   │   ├── reranker.py
-│   │   ├── parser.py
-│   ├── config_loader.py
-│   ├── models.py        # Shared Pydantic Models
-│   ├── utils.py
-├── database/            # Memgraph Implementation
-├── indexing/            # Indexing Logic
-├── retrieval/           # Retrieval Logic (Pre & Core)
-├── post_retrieval/      # Post-Retrieval Logic
-├── generation/          # Generation Logic
-├── providers/           # External Service Providers
-├── orchestration/       # Pipeline & Orchestrator
+src/
+├── models/              # Data models and entities
+├── services/            # Core business logic for each pipeline stage
+│   ├── indexing/        # Document parsing, chunking, embedding, knowledge graph extraction
+│   ├── pre_retrieval/   # Query expansion and preprocessing
+│   ├── retrieval/       # Hybrid vector + graph search
+│   ├── post_retrieval/  # Result re-ranking
+│   ├── generation/      # Prompt assembly and LLM interaction
+│   └── orchestration/   # Pipeline coordination and state management
+├── cli/                 # Command-line interface handlers
+├── config/              # Configuration management
+├── utils/               # Utility functions and helpers
+└── lib/                 # Shared library components
+
 tests/
-├── contract/
-├── integration/
-└── unit/
-config.json5             # Main Configuration
-pyproject.toml
-main.py
+├── contract/            # CLI interface tests
+├── integration/         # Pipeline component integration tests
+└── unit/                # Unit tests for individual functions and classes
 ```
 
-**Structure Decision**: RAG backend implementation following the prescribed directory structure from the constitution.
-
-## Implementation Milestones
-
-### 里程碑 1: 骨架构建 (基础设施与入库)
-**目标**: 能够解析文档、生成嵌入并存储到 Memgraph 中。
-
-**关键任务**:
-- 项目初始化: 配置 uv 环境，建立目录结构和 config.json5
-- 数据库实现: 完成 MemgraphDB 类，确保能连接并执行基础 Cypher 查询
-- 基础索引流程: 实现简化的索引流：
-  - 解析 (Mineru)
-  - 简单切分 (暂不含 Parent/Child)
-  - 嵌入 (Qwen)
-  - 存储 (写入 Memgraph 向量索引)
-
-### 里程碑 2: 大脑构建 (基础 RAG)
-**目标**: 能够提问并基于存储的向量获得回答。
-
-**关键任务**:
-- Provider 集成: 完整实现 QwenProvider 的生成和嵌入功能
-- 检索逻辑: 在 MemgraphRetriever 中实现基础向量搜索
-- 编排器 V1: 创建线性流水线：查询 -> 嵌入 -> 向量搜索 -> 生成
-- API V0.1: 实现一个基础的非流式接口以测试流程
-
-### 里程碑 3: 肌肉增强 (高级特性)
-**目标**: 实现模块化 RAG 特性以提高准确率。
-
-**关键任务**:
-- Small-to-Big: 重构索引模块以支持 Parent/Child 切分
-- 上下文召回: 重构检索模块实现 Context Recall
-- 重排序 (Reranking): 在检索后阶段集成 gte-rerank
-- 查询预处理: 实现 HyDE 和查询扩展模块
-- 动态编排: 更新 RAGPipeline 以支持用户参数控制 (use_hyde, use_rerank)
-
-### 里程碑 4: 图增强 (知识图谱能力)
-**目标**: 利用 Memgraph 的图能力。
-
-**关键任务**:
-- 实体提取: 实现 LLM Prompt 以在索引时提取实体
-- 图存储: 更新索引模块以写入实体节点和关系
-- 图检索: 更新 MemgraphRetriever 以执行图遍历或混合搜索 (Keyword + Vector + Graph)
-
-### 里程碑 5: 生产化打磨
-**目标**: 性能优化、流式输出与容器化。
-
-**关键任务**:
-- 流式输出: 将 API 改造为使用 SSE (StreamingResponse)
-- 配置安全: 确保所有敏感 Key 通过环境变量加载，而非硬编码
-- 文档: 为核心接口和编排器方法编写 Google 风格的 Docstrings
-- Docker: 创建针对 Python 3.12 和 uv 优化的 Dockerfile
+**Structure Decision**: Single project structure with modular organization by pipeline stage. This structure aligns with the RAG pipeline architecture and allows for clear separation of concerns while maintaining simplicity for a command-line application.
 
 ## Complexity Tracking
 

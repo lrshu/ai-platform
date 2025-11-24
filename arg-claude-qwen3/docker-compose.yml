@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  rag-backend:
+    build: .
+    container_name: rag-backend
+    environment:
+      - QWEN_API_KEY=${QWEN_API_KEY}
+      - DATABASE_URL=${DATABASE_URL:-bolt://memgraph:7687}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env
+    depends_on:
+      - memgraph
+    command: python main.py --help
+
+  memgraph:
+    image: memgraph/memgraph:latest
+    container_name: rag-memgraph
+    ports:
+      - "7687:7687"
+      - "7444:7444"
+    volumes:
+      - memgraph_data:/var/lib/memgraph
+      - ./memgraph.conf:/etc/memgraph/memgraph.conf
+
+volumes:
+  memgraph_data:

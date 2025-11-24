@@ -1,0 +1,14 @@
+[project]
+name = "arg-claude-glm46"
+version = "0.1.0"
+description = "RAG Backend System with standardized pipeline"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain-core>=0.1.0",
+    "pymupdf>=1.23.0",
+    "neo4j>=5.0.0",
+    "python-dotenv>=1.0.0",
+    "spacy>=3.0.0",
+    "pytest>=7.0.0",
+]

@@ -1,0 +1,102 @@
+openapi: 3.0.0
+info:
+  title: RAG Backend - Search API
+  description: API contract for document search functionality
+  version: 1.0.0
+
+paths:
+  /search:
+    post:
+      summary: Search for relevant document chunks
+      description: Perform hybrid retrieval using vector and graph-based search
+      operationId: searchDocuments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - question
+              properties:
+                name:
+                  type: string
+                  description: Name/identifier for the document collection
+                question:
+                  type: string
+                  description: The question to search for
+                options:
+                  type: object
+                  properties:
+                    top_k:
+                      type: integer
+                      description: Number of results to return
+                      default: 5
+                    enable_query_expansion:
+                      type: boolean
+                      description: Whether to expand the query
+                      default: true
+                    enable_reranking:
+                      type: boolean
+                      description: Whether to re-rank results
+                      default: true
+                    enable_vector_search:
+                      type: boolean
+                      description: Whether to perform vector search
+                      default: true
+                    enable_graph_search:
+                      type: boolean
+                      description: Whether to perform graph search
+                      default: true
+      responses:
+        '200':
+          description: Search results successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        chunk_id:
+                          type: string
+                        content:
+                          type: string
+                        relevance_score:
+                          type: number
+                          format: float
+                        document_title:
+                          type: string
+        '400':
+          description: Invalid request parameters
+        '404':
+          description: Collection not found
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    SearchResult:
+      type: object
+      properties:
+        chunk_id:
+          type: string
+        content:
+          type: string
+        relevance_score:
+          type: number
+          format: float
+        document_title:
+          type: string
+
+    SearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'

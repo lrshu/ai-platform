@@ -1,1 +1,0 @@
-"""Database module for RAG backend implementation."""

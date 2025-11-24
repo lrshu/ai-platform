@@ -1,1 +1,0 @@
-"""External service providers for RAG backend implementation."""

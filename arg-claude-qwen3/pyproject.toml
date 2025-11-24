@@ -1,0 +1,66 @@
+[project]
+name = "arg-claude-qwen3-v6"
+version = "0.1.0"
+description = "RAG Backend System with Indexing, Search, and Conversational QA"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain-core>=0.3.0",
+    "langchain-community>=0.3.0",
+    "neo4j>=5.0.0",
+    "pypdf>=5.0.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "pytest>=9.0.1",
+    "pyyaml>=6.0.3",
+    "ruff>=0.14.6",
+    "langchain[text-splitters]>=1.0.8",
+    "langchain-text-splitters>=1.0.0",
+    "psutil>=7.1.3",
+    "dashscope>=1.25.0",
+]
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow tests",
+]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+]
+extend-ignore = [
+    "E501",  # Line too long (handled by formatter)
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

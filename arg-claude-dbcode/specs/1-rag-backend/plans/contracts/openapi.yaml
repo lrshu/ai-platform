@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: RAG Backend API
+  description: API for RAG backend system
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+  /api/v1/index:
+    post:
+      summary: Index a PDF document
+      description: Parse, split, vectorize, and store a PDF document in the knowledge graph
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The PDF file to index
+                name:
+                  type: string
+                  description: A user-provided name for the document
+              required:
+                - file
+                - name
+      responses:
+        '201':
+          description: Document indexed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  document_id:
+                    type: string
+                    description: Unique identifier for the indexed document
+                  message:
+                    type: string
+                    description: Success message
+        '400':
+          description: Bad request (invalid file, missing parameters)
+        '500':
+          description: Internal server error
+
+  /api/v1/search:
+    get:
+      summary: Search indexed content
+      description: Perform hybrid retrieval (vector + graph search) on indexed documents
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The name of the document to search
+        - name: question
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The search query
+      responses:
+        '200':
+          description: Search results retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        chunk_id:
+                          type: string
+                          description: Unique identifier for the text chunk
+                        content:
+                          type: string
+                          description: Text content of the chunk
+                        score:
+                          type: number
+                          format: float
+                          description: Relevance score
+                        metadata:
+                          type: object
+                          additionalProperties: true
+                          description: Additional metadata about the chunk
+        '404':
+          description: Document not found
+        '500':
+          description: Internal server error
+
+  /api/v1/chat:
+    post:
+      summary: Generate answer from indexed content
+      description: Generate a coherent answer based on indexed document content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  required: true
+                  description: The name of the document to use
+                question:
+                  type: string
+                  required: true
+                  description: The question to answer
+              required:
+                - name
+                - question
+      responses:
+        '200':
+          description: Answer generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  answer:
+                    type: string
+                    description: Generated answer
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        chunk_id:
+                          type: string
+                          description: Unique identifier for the source text chunk
+                        content:
+                          type: string
+                          description: Source text content
+                        score:
+                          type: number
+                          format: float
+                          description: Relevance score
+        '404':
+          description: Document not found
+        '500':
+          description: Internal server error
+
+  /api/v1/documents/{name}:
+    get:
+      summary: Get document information
+      description: Retrieve information about an indexed document
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the document to retrieve
+      responses:
+        '200':
+          description: Document information retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  document_id:
+                    type: string
+                  document_name:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  page_count:
+                    type: integer
+                  status:
+                    type: string
+                  chunk_count:
+                    type: integer
+        '404':
+          description: Document not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete a document
+      description: Remove an indexed document from the knowledge graph
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the document to delete
+      responses:
+        '200':
+          description: Document deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success message
+        '404':
+          description: Document not found
+        '500':
+          description: Internal server error

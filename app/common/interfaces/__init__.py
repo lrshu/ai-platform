@@ -1,1 +1,0 @@
-"""Abstract base classes for external service interfaces."""
