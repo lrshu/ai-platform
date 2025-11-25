@@ -11,4 +11,41 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "spacy>=3.0.0",
     "pytest>=7.0.0",
+    "black>=25.11.0",
+    "flake8>=7.3.0",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = [
+    "E203",  # whitespace before ':'
+    "W503",  # line break before binary operator
+]
+exclude = [
+    ".git",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "build",
+    "dist",
 ]

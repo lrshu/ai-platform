@@ -11,46 +11,47 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 # Import configuration
-from config import load_env
-
-# Load environment variables
-load_env()
+try:
+    from src.config import load_env
+    # Load environment variables
+    load_env()
+except ImportError:
+    # Fallback if config module is not available
+    import dotenv
+    dotenv.load_dotenv()
 
 
 def indexing_command(args):
     """Handle the indexing command."""
-    print(f"Indexing document '{args.name}' from file '{args.file}'")
-    # TODO: Implement indexing pipeline
-    # 1. Parse PDF document
-    # 2. Extract content in markdown format
-    # 3. Split content into chunks
-    # 4. Generate vector embeddings for each chunk
-    # 5. Extract entity relationships and build knowledge graph
-    # 6. Store all data in Memgraph with the name identifier
-    return 0
+    # Import the actual indexing command implementation
+    try:
+        from src.cli.indexing import indexing_command as actual_indexing_command
+        return actual_indexing_command(args)
+    except ImportError as e:
+        print(f"Error importing indexing command: {e}", file=sys.stderr)
+        return 1
 
 
 def search_command(args):
     """Handle the search command."""
-    print(f"Searching for '{args.question}' in document collection '{args.name}'")
-    # TODO: Implement search pipeline
-    # 1. Expand the query if enabled
-    # 2. Perform hybrid search (vector + graph-based)
-    # 3. Re-rank results if enabled
-    # 4. Return the most relevant content chunks
-    return 0
+    # Import the actual search command implementation
+    try:
+        from src.cli.search import search_command as actual_search_command
+        return actual_search_command(args)
+    except ImportError as e:
+        print(f"Error importing search command: {e}", file=sys.stderr)
+        return 1
 
 
 def chat_command(args):
     """Handle the chat command."""
-    print(f"Starting conversation with document collection '{args.name}'")
-    print("Type 'quit' to exit the conversation.")
-    # TODO: Implement conversational QA pipeline
-    # 1. Start an interactive conversation session
-    # 2. Maintain context across multiple turns
-    # 3. Generate answers based on retrieved document content
-    # 4. Continue until the user exits
-    return 0
+    # Import the actual chat command implementation
+    try:
+        from src.cli.chat import chat_command as actual_chat_command
+        return actual_chat_command(args)
+    except ImportError as e:
+        print(f"Error importing chat command: {e}", file=sys.stderr)
+        return 1
 
 
 def main():
@@ -76,9 +77,7 @@ def main():
     # Chat command
     chat_parser = subparsers.add_parser("chat", help="Engage in conversational QA")
     chat_parser.add_argument("--name", required=True, help="Name identifier of the document collection to use")
-    chat_parser.add_argument("--top-k", type=int, default=5, help="Number of results to consider for context")
-    chat_parser.add_argument("--expand-query", action="store_true", help="Enable query expansion")
-    chat_parser.add_argument("--rerank", action="store_true", help="Enable result reranking")
+    chat_parser.add_argument("--user-id", help="User ID for the conversation")
     chat_parser.set_defaults(func=chat_command)
 
     # Parse arguments

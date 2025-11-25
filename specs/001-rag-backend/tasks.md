@@ -24,11 +24,11 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize Python project with dependencies from pyproject.toml
-- [ ] T003 [P] Configure linting and formatting tools (black, flake8)
-- [ ] T004 [P] Set up environment variable management with python-dotenv
-- [ ] T005 Create base configuration module in src/config/
+- [x] T001 Create project structure per implementation plan
+- [x] T002 Initialize Python project with dependencies from pyproject.toml
+- [x] T003 [P] Configure linting and formatting tools (black, flake8)
+- [x] T004 [P] Set up environment variable management with python-dotenv
+- [x] T005 Create base configuration module in src/config/
 
 ---
 
@@ -38,13 +38,13 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Set up Memgraph database connection with neo4j driver
-- [ ] T007 [P] Implement PDF parsing functionality with PyMuPDF
-- [ ] T008 [P] Set up LangChain core components
-- [ ] T009 [P] Configure DashScope API clients for embedding and LLM services
-- [ ] T010 Create base models/entities based on data-model.md
-- [ ] T011 Configure error handling and logging infrastructure
-- [ ] T012 Set up environment configuration management
+- [x] T006 Set up Memgraph database connection with neo4j driver
+- [x] T007 [P] Implement PDF parsing functionality with PyMuPDF
+- [x] T008 [P] Set up LangChain core components
+- [x] T009 [P] Configure DashScope API clients for embedding and LLM services
+- [x] T010 Create base models/entities based on data-model.md
+- [x] T011 Configure error handling and logging infrastructure
+- [x] T012 Set up environment configuration management
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -60,23 +60,23 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T013 [P] [US1] Contract test for indexing CLI command in tests/contract/test_indexing.py
-- [ ] T014 [P] [US1] Integration test for PDF parsing in tests/integration/test_pdf_parsing.py
+- [x] T013 [P] [US1] Contract test for indexing CLI command in tests/contract/test_indexing.py
+- [x] T014 [P] [US1] Integration test for PDF parsing in tests/integration/test_pdf_parsing.py
 
 ### Implementation for User Story 1
 
-- [ ] T015 [P] [US1] Create Document model in src/models/document.py
-- [ ] T016 [P] [US1] Create Chunk model in src/models/chunk.py
-- [ ] T017 [P] [US1] Create Entity and Relationship models in src/models/kg.py
-- [ ] T018 [US1] Implement document parsing service in src/services/indexing/parser.py
-- [ ] T019 [US1] Implement chunking service in src/services/indexing/chunker.py
-- [ ] T020 [US1] Implement embedding generation service in src/services/indexing/embedder.py
-- [ ] T021 [US1] Implement knowledge graph extraction service in src/services/indexing/kg_extractor.py
-- [ ] T022 [US1] Implement storage service in src/services/indexing/storage.py
-- [ ] T023 [US1] Create indexing orchestrator in src/services/indexing/orchestrator.py
-- [ ] T024 [US1] Implement indexing CLI handler in src/cli/indexing.py
-- [ ] T025 [US1] Add validation and error handling for file operations
-- [ ] T026 [US1] Add logging for indexing operations
+- [x] T015 [P] [US1] Create Document model in src/models/document.py
+- [x] T016 [P] [US1] Create Chunk model in src/models/chunk.py
+- [x] T017 [P] [US1] Create Entity and Relationship models in src/models/kg.py
+- [x] T018 [US1] Implement document parsing service in src/services/indexing/parser.py
+- [x] T019 [US1] Implement chunking service in src/services/indexing/chunker.py
+- [x] T020 [US1] Implement embedding generation service in src/services/indexing/embedder.py
+- [x] T021 [US1] Implement knowledge graph extraction service in src/services/indexing/kg_extractor.py
+- [x] T022 [US1] Implement storage service in src/services/indexing/storage.py
+- [x] T023 [US1] Create indexing orchestrator in src/services/indexing/orchestrator.py
+- [x] T024 [US1] Implement indexing CLI handler in src/cli/indexing.py
+- [x] T025 [US1] Add validation and error handling for file operations
+- [x] T026 [US1] Add logging for indexing operations
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -90,22 +90,22 @@
 
 ### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
 
-- [ ] T027 [P] [US2] Contract test for search CLI command in tests/contract/test_search.py
-- [ ] T028 [P] [US2] Integration test for search pipeline in tests/integration/test_search.py
+- [x] T027 [P] [US2] Contract test for search CLI command in tests/contract/test_search.py
+- [x] T028 [P] [US2] Integration test for search pipeline in tests/integration/test_search.py
 
 ### Implementation for User Story 2
 
-- [ ] T029 [P] [US2] Create Query model in src/models/query.py
-- [ ] T030 [P] [US2] Create SearchResult model in src/models/search_result.py
-- [ ] T031 [US2] Implement query expansion service in src/services/pre_retrieval/query_expander.py
-- [ ] T032 [US2] Implement vector search service in src/services/retrieval/vector_search.py
-- [ ] T033 [US2] Implement graph search service in src/services/retrieval/graph_search.py
-- [ ] T034 [US2] Implement hybrid search orchestrator in src/services/retrieval/hybrid_search.py
-- [ ] T035 [US2] Implement result re-ranking service in src/services/post_retrieval/reranker.py
-- [ ] T036 [US2] Create search orchestrator in src/services/retrieval/orchestrator.py
-- [ ] T037 [US2] Implement search CLI handler in src/cli/search.py
-- [ ] T038 [US2] Add validation and error handling for search operations
-- [ ] T039 [US2] Add logging for search operations
+- [x] T029 [P] [US2] Create Query model in src/models/query.py
+- [x] T030 [P] [US2] Create SearchResult model in src/models/search_result.py
+- [x] T031 [US2] Implement query expansion service in src/services/pre_retrieval/query_expander.py
+- [x] T032 [US2] Implement vector search service in src/services/retrieval/vector_search.py
+- [x] T033 [US2] Implement graph search service in src/services/retrieval/graph_search.py
+- [x] T034 [US2] Implement hybrid search orchestrator in src/services/retrieval/hybrid_search.py
+- [x] T035 [US2] Implement result re-ranking service in src/services/post_retrieval/reranker.py
+- [x] T036 [US2] Create search orchestrator in src/services/retrieval/orchestrator.py
+- [x] T037 [US2] Implement search CLI handler in src/cli/search.py
+- [x] T038 [US2] Add validation and error handling for search operations
+- [x] T039 [US2] Add logging for search operations
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -119,20 +119,20 @@
 
 ### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
 
-- [x] T040 [P] [US3] Contract test for chat CLI command in tests/contract/test_chat.py
-- [x] T041 [P] [US3] Integration test for conversation flow in tests/integration/test_chat.py
+- [ ] T040 [P] [US3] Contract test for chat CLI command in tests/contract/test_chat.py
+- [ ] T041 [P] [US3] Integration test for conversation flow in tests/integration/test_chat.py
 
 ### Implementation for User Story 3
 
-- [x] T042 [P] [US3] Create Conversation model in src/models/conversation.py
-- [x] T043 [P] [US3] Create ConversationTurn model in src/models/conversation_turn.py
-- [x] T044 [US3] Implement prompt assembly service in src/services/generation/prompt_assembler.py
-- [x] T045 [US3] Implement LLM interaction service in src/services/generation/llm_client.py
-- [x] T046 [US3] Implement answer generation service in src/services/generation/answer_generator.py
-- [x] T047 [US3] Create conversation manager in src/services/orchestration/conversation_manager.py
-- [x] T048 [US3] Implement chat CLI handler in src/cli/chat.py
-- [x] T049 [US3] Add validation and error handling for conversation operations
-- [x] T050 [US3] Add logging for conversation operations
+- [ ] T042 [P] [US3] Create Conversation model in src/models/conversation.py
+- [ ] T043 [P] [US3] Create ConversationTurn model in src/models/conversation_turn.py
+- [ ] T044 [US3] Implement prompt assembly service in src/services/generation/prompt_assembler.py
+- [ ] T045 [US3] Implement LLM interaction service in src/services/generation/llm_client.py
+- [ ] T046 [US3] Implement answer generation service in src/services/generation/answer_generator.py
+- [ ] T047 [US3] Create conversation manager in src/services/orchestration/conversation_manager.py
+- [ ] T048 [US3] Implement chat CLI handler in src/cli/chat.py
+- [ ] T049 [US3] Add validation and error handling for conversation operations
+- [ ] T050 [US3] Add logging for conversation operations
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -142,15 +142,15 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [x] T051 [P] Documentation updates in README.md and docs/
-- [x] T052 Code cleanup and refactoring
-- [x] T053 Performance optimization across all stories
-- [x] T054 [P] Additional unit tests in tests/unit/
-- [x] T055 Security hardening
-- [x] T056 Run quickstart.md validation
-- [x] T057 Update main.py to integrate all CLI handlers
-- [x] T058 Add structured logging with context
-- [x] T059 Implement metrics collection for performance monitoring
+- [ ] T051 [P] Documentation updates in README.md and docs/
+- [ ] T052 Code cleanup and refactoring
+- [ ] T053 Performance optimization across all stories
+- [ ] T054 [P] Additional unit tests in tests/unit/
+- [ ] T055 Security hardening
+- [ ] T056 Run quickstart.md validation
+- [ ] T057 Update main.py to integrate all CLI handlers
+- [ ] T058 Add structured logging with context
+- [ ] T059 Implement metrics collection for performance monitoring
 
 ---
 
