@@ -1,0 +1,20 @@
+version: "3"
+services:
+  memgraph:
+    image: memgraph/memgraph-platform
+    ports:
+      - "7687:7687"
+      - "7444:7444"
+      - "3000:3000"
+    volumes:
+      - mg_lib:/var/lib/memgraph
+    environment:
+      - MEMGRAPH_USER=
+      - MEMGRAPH_PASSWORD=
+      - MEMGRAPH_AUTH_ENABLED=false
+    entrypoint:
+      - "/usr/lib/memgraph/memgraph"
+      - "--telemetry-enabled=false"
+
+volumes:
+  mg_lib:

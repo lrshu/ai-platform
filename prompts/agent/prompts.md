@@ -4,17 +4,15 @@
 
 # create feature agent backend specify
 
-构建一个简单的标准化的 智能体 后端系统，使用 langgraph 作为
+构建一个简单的标准化的 智能体 后端系统，使用 langgraph 作为整体框架
 
 ## 技术栈
 
-如果没有指定使用的技术方向，优先使用 langchain 体系下的方式实现后续功能
+如果没有指定使用的技术方向，优先使用 langgraph/langchain 体系下的方式实现后续功能
 
 - **Runtime**: Python 3.12+ (uv)
-- **Framework**: LangChain (Core)
-- **Database**: Memgraph with neo4j
+- **Framework**: langgraph
 - **LLM**: Qwen3-Max
-- **Embedding**: Qwen text-embedding-v4
 - **Rerank**: DashScopeRerank
 
 # 定义配置 .env
@@ -24,10 +22,9 @@
 QWEN_API_BASE=https://dashscope.aliyuncs.com/compatible-mode/v1
 QWEN_API_KEY="sk-bac503b5a123456aa106e9574c89b0a0"
 
-# Memgraph
-DATABASE_URL="bolt://127.0.0.1:7687"
-DATABASE_USER=""
-DATABASE_PASSWORD=""
+# Langsmith
+LANGSMITH_API_KEY="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"
+LANGSMITH_PROJECT="default"
 ```
 
 # 核心功能如下

@@ -5,19 +5,19 @@
 
 ## Phase 1: Setup
 
-- [ ] T001 Create project structure in `src/` and `tests/` as defined in `plan.md`.
-- [ ] T002 [P] Initialize `pyproject.toml` with dependencies: `langchain`, `memgraph`, `typer`, `python-dotenv`, `pyarrow`, `pymupdf`.
-- [ ] T003 [P] Create `docker-compose.yml` for Memgraph.
-- [ ] T004 [P] Configure `pytest` in `pyproject.toml` or `pytest.ini`.
+- [x] T001 Create project structure in `src/` and `tests/` as defined in `plan.md`.
+- [x] T002 [P] Initialize `pyproject.toml` with dependencies: `langchain`, `memgraph`, `typer`, `python-dotenv`, `pyarrow`, `pymupdf`.
+- [x] T003 [P] Create `docker-compose.yml` for Memgraph.
+- [x] T004 [P] Configure `pytest` in `pyproject.toml` or `pytest.ini`.
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-- [ ] T005 Implement configuration loading from `.env` in `src/rag_backend/config.py`.
-- [ ] T006 Implement Memgraph connection logic in `src/rag_backend/database.py`.
-- [ ] T007 [P] Define data models/schemas in `src/rag_backend/models.py` corresponding to `data-model.md`.
-- [ ] T008 Setup CLI application structure with Typer in `src/main.py`.
+- [x] T005 Implement configuration loading from `.env` in `src/rag_backend/config.py`.
+- [x] T006 Implement Memgraph connection logic in `src/rag_backend/database.py`.
+- [x] T007 [P] Define data models/schemas in `src/rag_backend/models.py` corresponding to `data-model.md`.
+- [x] T008 Setup CLI application structure with Typer in `src/main.py`.
 
 ---
 
@@ -27,16 +27,16 @@
 **Independent Test**: Run `python main.py indexing` with a test PDF and verify completion.
 
 ### Tests for User Story 1
-- [ ] T009 [P] [US1] Write unit test for PDF parsing in `tests/unit/test_indexing.py`.
-- [ ] T010 [P] [US1] Write unit test for text chunking in `tests/unit/test_indexing.py`.
+- [x] T009 [P] [US1] Write unit test for PDF parsing in `tests/unit/test_indexing.py`.
+- [x] T010 [P] [US1] Write unit test for text chunking in `tests/unit/test_indexing.py`.
 - [ ] T011 [US1] Write integration test for the full indexing pipeline in `tests/integration/test_pipeline.py`.
 
 ### Implementation for User Story 1
-- [ ] T012 [P] [US1] Implement PDF parsing in `src/rag_backend/indexing.py`.
-- [ ] T013 [P] [US1] Implement text chunking strategy in `src/rag_backend/indexing.py`.
-- [ ] T014 [US1] Implement vector embedding generation for chunks in `src/rag_backend/indexing.py`.
-- [ ] T015 [US1] Implement knowledge graph extraction (entities, relationships) in `src/rag_backend/indexing.py`.
-- [ ] T016 [US1] Implement storage logic to save chunks and graph to Memgraph in `src/rag_backend/database.py`.
+- [x] T012 [P] [US1] Implement PDF parsing in `src/rag_backend/indexing.py`.
+- [x] T013 [P] [US1] Implement text chunking strategy in `src/rag_backend/indexing.py`.
+- [x] T014 [US1] Implement vector embedding generation for chunks in `src/rag_backend/indexing.py`.
+- [x] T015 [US1] Implement knowledge graph extraction (entities, relationships) in `src/rag_backend/indexing.py`.
+- [x] T016 [US1] Implement storage logic to save chunks and graph to Memgraph in `src/rag_backend/database.py`.
 - [ ] T017 [US1] Implement the overall indexing pipeline in `src/rag_backend/orchestration.py`.
 - [ ] T018 [US1] Add the `indexing` command to `src/main.py`.
 
