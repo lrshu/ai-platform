@@ -31,7 +31,10 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- **Code Quality**: Does the proposed implementation adhere to established coding standards?
+- **Testing Standards**: Is there a clear plan for unit, integration, and end-to-end testing?
+- **Consistent User Experience**: Does the feature align with the existing design system and interaction patterns?
+- **Performance Requirements**: Have performance benchmarks been defined and is there a plan to test against them?
 
 ## Project Structure
 
