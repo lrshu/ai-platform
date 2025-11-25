@@ -8,8 +8,8 @@ from langchain_community.embeddings import DashScopeEmbeddings
 from langchain_openai import ChatOpenAI
 from openai import APIConnectionError, APIError, APIStatusError, BadRequestError, RateLimitError
 
-from services.config import get_settings
-from services.fallbacks import embed_texts_locally, summarize_locally
+from src.config import get_settings
+from src.fallbacks import embed_texts_locally, summarize_locally
 
 logger = logging.getLogger(__name__)
 

@@ -4,7 +4,7 @@ import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List
-from services.util import thread_pool_runner
+from src.util import thread_pool_runner
 import asyncio
 
 
@@ -13,10 +13,10 @@ from langchain_core.documents import Document
 from langchain_experimental.graph_transformers import LLMGraphTransformer
 from pypdf import PdfReader
 
-from services.clients import embed_documents_safe, get_llm
-from services.graph import GraphStore
-from services.models import Chunk, GraphEdge, VectorRecord
-from services.parsers import MarkdownParser
+from src.clients import embed_documents_safe, get_llm
+from src.graph import GraphStore
+from src.models import Chunk, GraphEdge, VectorRecord
+from src.parsers import MarkdownParser
 
 logger = logging.getLogger(__name__)
 

@@ -3,9 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterable, List
 
-from services.clients import embed_documents_safe, embed_query_safe
-from services.graph import GraphStore
-from services.models import RetrievalResult
+from src.clients import embed_documents_safe, embed_query_safe
+from src.graph import GraphStore
+from src.models import RetrievalResult
 
 
 @dataclass

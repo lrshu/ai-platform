@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from langchain_core.prompts import ChatPromptTemplate
 
-from services.clients import invoke_prompt_safe
-from services.models import GenerationResult, RetrievalResult
+from src.clients import invoke_prompt_safe
+from src.models import GenerationResult, RetrievalResult
 
 
 ANSWER_PROMPT = ChatPromptTemplate.from_template(

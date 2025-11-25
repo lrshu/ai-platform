@@ -1,19 +1,19 @@
 from __future__ import annotations
 
-from services import orchestration
-from services.models import GenerationResult, RetrievalResult
+from src import orchestration
+from src.models import GenerationResult, RetrievalResult
 
 
 def test_orchestration_smoke(monkeypatch, tmp_path):
     monkeypatch.setattr(
-        "services.orchestration.index",
+        "src.orchestration.index",
         lambda name, path: type("Idx", (), {"name": name, "chunk_count": 1})(),
     )
 
     fake_result = RetrievalResult(content="answer", score=1.0, metadata={})
-    monkeypatch.setattr("services.orchestration.search", lambda name, question, options=None: [fake_result])
+    monkeypatch.setattr("src.orchestration.search", lambda name, question, options=None: [fake_result])
     monkeypatch.setattr(
-        "services.orchestration.chat",
+        "src.orchestration.chat",
         lambda name, question, options=None: GenerationResult(answer="response", citations=[fake_result]),
     )
 

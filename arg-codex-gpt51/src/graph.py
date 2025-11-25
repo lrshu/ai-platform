@@ -4,8 +4,8 @@ from typing import Iterable, Sequence
 
 from neo4j import GraphDatabase
 
-from services.config import get_settings
-from services.models import GraphEdge, RetrievalResult, VectorRecord
+from src.config import get_settings
+from src.models import GraphEdge, RetrievalResult, VectorRecord
 
 
 def _ensure_list(values: Iterable[float]) -> list[float]:

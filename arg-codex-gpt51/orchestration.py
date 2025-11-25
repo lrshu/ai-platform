@@ -8,8 +8,8 @@ import post_retrieval
 import pre_retrieval
 import retrieval
 from generation import run_generation
-from services.graph import GraphStore
-from services.models import GenerationResult, RetrievalResult
+from src.graph import GraphStore
+from src.models import GenerationResult, RetrievalResult
 
 
 @dataclass

@@ -3,12 +3,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
-from services.generation import run_generation
-from services.indexing import IndexingResult, run_indexing
-from services.post_retrieval import rerank
-from services.pre_retrieval import preprocess_question
-from services.retrieval import RetrievalOptions, run_retrieval
-from services.models import GenerationResult, RetrievalResult
+from src.generation import run_generation
+from src.indexing import IndexingResult, run_indexing
+from src.post_retrieval import rerank
+from src.pre_retrieval import preprocess_question
+from src.retrieval import RetrievalOptions, run_retrieval
+from src.models import GenerationResult, RetrievalResult
 
 
 @dataclass

@@ -4,7 +4,7 @@ from typing import Iterable, List
 
 from rapidfuzz import fuzz
 
-from services.models import RetrievalResult
+from src.models import RetrievalResult
 
 
 def rerank(results: Iterable[RetrievalResult]) -> List[RetrievalResult]:

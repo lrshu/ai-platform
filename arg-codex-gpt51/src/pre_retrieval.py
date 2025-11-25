@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from langchain_core.prompts import ChatPromptTemplate
 
-from services.clients import get_llm, invoke_prompt_safe
+from src.clients import get_llm, invoke_prompt_safe
 
 PROMPT = ChatPromptTemplate.from_template(
     """You rewrite search queries. Expand the question with synonyms,

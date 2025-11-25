@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import lru_cache
 from langchain_openai import OpenAIEmbeddings
 
-from services.config import get_settings
+from src.config import get_settings
 
 
 @lru_cache(maxsize=1)
