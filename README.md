@@ -35,6 +35,9 @@ codex  --dangerously-bypass-approvals-and-sandbox
 
 # openrouter claude code route config
 
+切换使用 openai/gpt-5.1-codex 时，建议关闭 claude code 的 thinking 模式， 否则执行太慢
+当前还无法使用 google/gemini-3-pro-preview
+
 ```json
 "Router": {
     "default": "openrouter,anthropic/claude-sonnet-4.5",
