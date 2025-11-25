@@ -4,69 +4,50 @@
 
 # create feature agent backend specify
 
-构建一个简单的标准化的 智能体 后端系统，使用 langgraph 作为整体框架
+构建一个简单的标准化的 新员工入职引导多智能体 后端系统，使用 langchain 下的 deepagents 作为整体框架
 
-## 技术栈
+# 员工入职流程
 
-如果没有指定使用的技术方向，优先使用 langgraph/langchain 体系下的方式实现后续功能
+1. 员工身份验证：员工需上传身份证照片；
+2. 员工信息完善：包括毕业院校填写，学历选择，岗位选择；
+3. 宣讲岗位职责：根据员工信息和选择的岗位，检索输出对应的岗位职责；
+4. 开通权限： 行政岗位开通邮箱账号权限， IT 开发人员开通 git 账号权限，返回开通后的账号信息；
+5. 线上入职结束，提醒员工需完成的后续任务，包括领取工牌、找部门领导汇报、参加入职培训等；
+
+# 核心智能体角色说明
+
+为保证智能体完成以上入职流程，规划以下角色， 每个角色一个智能体
+
+1. 入职主管: 主智能体，负责规划和流转，员工提出入职申请时，给出入职说明和待处理的 checklist， 维护 Checklist 状态， 并可随时查看当前 checklist 状态，引导用户继续完成
+2. 身份验证: 引导员工上传身份证照片，使用 VL 模型验证照片是否正确，并提取身份信息，如果不正确，提示如何修正并重新上传
+3. 信息收集：一步一步引导员工填写相应的信息，比验证输入是否正确，如果错误，给出提示并引导用户重新输入
+4. 工具调用：MCP 工具调用智能体，根据需要，确定调用的工具，包括开通邮箱账号权限、开通 git 账号权限登工具
+5. 问题解答：问题解答智能体，根据需要，回答员工的提问，包括入职说明、岗位职责说明、后续任务说明等
+
+# 技术栈
+
+如果没有指定使用的技术方向，优先使用 deepagents 体系下的方式实现后续功能
 
 - **Runtime**: Python 3.12+ (uv)
-- **Framework**: langgraph
-- **LLM**: Qwen3-Max
-- **Rerank**: DashScopeRerank
+- **Framework**: deepagents
+- **LLM**: qwen3-max, qwen3-vl-max
 
 # 定义配置 .env
 
 ```env
 # QWen Configuration
 QWEN_API_BASE=https://dashscope.aliyuncs.com/compatible-mode/v1
-QWEN_API_KEY="sk-bac503b5a123456aa106e9574c89b0a0"
+QWEN_API_KEY="sk-**"
+MCP_SERVER="http://127.0.0.1:9012/mcp"
 
 # Langsmith
-LANGSMITH_API_KEY="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"
+LANGSMITH_API_KEY="**"
 LANGSMITH_PROJECT="default"
 ```
 
-# 核心功能如下
-
-## indexing.py
-
-解析(文件地址): 读取解析 pdf 文件，返回 markdown
-切分(markdown): 返回切分后内容
-获取向量(分块): 返回分块对应的向量
-获取知识图谱(分块)：获取的实体关系
-存储(name, 向量和图谱)： 按 name 保存向量和知识图谱到 memgraph
-
-## pre_retrieval.py
-
-查询扩展(问题)：返回扩写的问题
-执行检索前(问题， 是否扩展查询)：返回处理后的问题内容
-
-## retrieval.py
-
-获取向量(原始问题，检索前处理后的问题)： 返回向量
-执行检索(name, 原始问题): 混合检索，执行 Vector + Graph Search，返回合并结果
-
-## post_retrieval.py
-
-重排序(检索结果)：返回排序后结果
-
-## generation.py
-
-执行生成(问题，检索结果)： 组装 Prompt， 调用 LLm，返回生成结果
-
-## orchestration.py
-
-索引(name,文件地址): 完成文档索引, 返回文档 id
-检索(name, 问题，选项)：返回重排序后的检索结果
-对话(name，问题，选项): 返回执行生成的结果
-选项默认设置: top_k, 开启扩展查询，执行重排序，执行向量检索，执行关键词检查，执行图谱检索
-
 ## main.py
 
-python main.py indexing --name [name1] --file [file_path]
-python main.py search --name [name1] --question [question]
-python main.py chat --name [name1]
+python main.py chat : 启动 langraph 智能体，开始聊天对话
 
 # create plans for rag backend feature
 
