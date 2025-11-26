@@ -1,0 +1,156 @@
+openapi: 3.1.0
+info:
+  title: New Hire Onboarding API
+  version: 0.1.0
+paths:
+  /onboarding/sessions:
+    post:
+      summary: Start onboarding session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                employeeId:
+                  type: string
+                languagePref:
+                  type: string
+                  enum: ["zh-CN", "en-US"]
+              required: [employeeId]
+      responses:
+        "201":
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardingSession"
+  /onboarding/sessions/{sessionId}/identity:
+    post:
+      summary: Upload ID photo metadata and callback URL for storage service
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uploadUrl
+:                  type: string
+                imageChecksum:
+                  type: string
+              required: [uploadUrl]
+      responses:
+        "202":
+          description: Validation started
+  /onboarding/sessions/{sessionId}/profile:
+    put:
+      summary: Submit profile data for validation
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileInput"
+      responses:
+        "200":
+          description: Profile accepted
+  /onboarding/sessions/{sessionId}/responsibilities:
+    get:
+      summary: Retrieve role responsibility brief
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Responsibility summary returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  summary:
+                    type: string
+                  postTasks:
+                    type: array
+                    items:
+                      type: string
+  /onboarding/sessions/{sessionId}/provisioning:
+    post:
+      summary: Trigger provisioning for accounts (email/git)
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "202":
+          description: Provisioning started
+  /onboarding/sessions/{sessionId}/status:
+    get:
+      summary: Fetch checklist status and outstanding tasks
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Status returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OnboardingSession"
+components:
+  schemas:
+    OnboardingSession:
+      type: object
+      properties:
+        id:
+          type: string
+        employeeId:
+          type: string
+        status:
+          type: string
+          enum: [pending_identity, pending_profile, pending_role_briefing, pending_access, completed]
+        checklist:
+          type: array
+          items:
+            type: object
+            properties:
+              step:
+                type: string
+              state:
+                type: string
+                enum: [pending, in_progress, completed, blocked]
+              notes:
+                type: string
+    ProfileInput:
+      type: object
+      properties:
+        university:
+          type: string
+        degreeLevel:
+          type: string
+          enum: [Associate, Bachelor, Master, Doctorate, Other]
+        desiredRole:
+          type: string
+      required: [university, degreeLevel, desiredRole]

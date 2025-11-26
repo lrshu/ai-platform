@@ -1,0 +1,44 @@
+[project]
+name = "mcp-claude-qwen3"
+version = "0.1.0"
+description = "MCP Account Provisioning Server - Provision email and git accounts based on Chinese names and ID numbers"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi-mcp>=0.1.0",
+    "uvicorn>=0.24.0",
+    "pypinyin>=0.44.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.407",
+    "pytest>=9.0.1",
+    "ruff>=0.14.6",
+]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # mccabe
+    "B",  # bugbear
+    "UP", # pyupgrade
+]
+extend-ignore = [
+    "E501",  # Line too long
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

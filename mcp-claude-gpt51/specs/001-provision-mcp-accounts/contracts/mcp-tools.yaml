@@ -1,0 +1,109 @@
+version: 1
+tools:
+  - name: email_account
+    title: Create MCP email account
+    description: >
+      Provisions a compliant email handle and password from name + national ID,
+      returning audit metadata for downstream onboarding.
+    input_schema:
+      type: object
+      required: [name, national_id]
+      properties:
+        name:
+          type: string
+          description: Full legal name in Chinese characters
+          minLength: 1
+        national_id:
+          type: string
+          description: 18-digit Chinese national ID (GB 11643-1999)
+          pattern: "^[0-9]{17}[0-9Xx]$"
+        request_context:
+          type: string
+          description: Optional free-form note for auditing (e.g., ticket number)
+    output_schema:
+      type: object
+      required:
+        - handle
+        - password
+        - timestamp
+        - audit_id
+        - status_code
+        - message
+      properties:
+        handle:
+          type: string
+          description: Deterministic lowercase pinyin handle ending with @email.com
+        password:
+          type: string
+          description: Random 16-character password with upper/lower/digits/symbols
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO-8601 issuance time
+        audit_id:
+          type: string
+          description: Server-generated UUID for compliance traceability
+        status_code:
+          type: string
+          enum: ["SUCCESS", "ERR_INVALID_ID", "ERR_TRANSLITERATION", "ERR_CONFIG"]
+        message:
+          type: string
+          description: Human-readable status message
+
+  - name: git_account
+    title: Create MCP git account
+    description: >
+      Issues git service credentials aligned with HR identity inputs,
+      mirroring validation rules from the email tool.
+    input_schema:
+      type: object
+      required: [name, national_id]
+      properties:
+        name:
+          type: string
+          description: Full legal name in Chinese characters
+          minLength: 1
+        national_id:
+          type: string
+          description: 18-digit Chinese national ID (GB 11643-1999)
+          pattern: "^[0-9]{17}[0-9Xx]$"
+        request_context:
+          type: string
+          description: Optional free-form note for auditing (e.g., repo list)
+    output_schema:
+      type: object
+      required:
+        - handle
+        - password
+        - timestamp
+        - audit_id
+        - status_code
+        - message
+      properties:
+        handle:
+          type: string
+          description: Deterministic lowercase pinyin handle ending with @git.com
+        password:
+          type: string
+          description: Random 16-character password with upper/lower/digits/symbols
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO-8601 issuance time
+        audit_id:
+          type: string
+          description: Server-generated UUID for compliance traceability
+        status_code:
+          type: string
+          enum: ["SUCCESS", "ERR_INVALID_ID", "ERR_TRANSLITERATION", "ERR_CONFIG"]
+        message:
+          type: string
+          description: Human-readable status message
+
+error_codes:
+  - code: ERR_INVALID_ID
+    description: National ID failed length/structure/checksum validation
+  - code: ERR_TRANSLITERATION
+    description: Name could not be transliterated into compliant lowercase pinyin
+  - code: ERR_CONFIG
+    description: Server misconfiguration prevented request processing

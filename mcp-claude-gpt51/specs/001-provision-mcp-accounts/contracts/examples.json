@@ -1,0 +1,34 @@
+[
+  {
+    "tool": "email_account",
+    "request": {
+      "name": "张三",
+      "national_id": "11010519491231002X",
+      "request_context": "onboarding-ticket-5821"
+    },
+    "expected_response": {
+      "handle": "zhangsan@email.com",
+      "password": "T7gkP2wLq9Se!",
+      "timestamp": "2025-11-25T08:10:55Z",
+      "audit_id": "c1f95d6e-7c1c-4d77-bceb-6a0a91c6cf70",
+      "status_code": "SUCCESS",
+      "message": "Email account provisioned"
+    }
+  },
+  {
+    "tool": "git_account",
+    "request": {
+      "name": "李四",
+      "national_id": "32031119770706001X",
+      "request_context": "repo-access-bundle"
+    },
+    "expected_response": {
+      "handle": "lisi@git.com",
+      "password": "Qw8mN4sDf1Hp@",
+      "timestamp": "2025-11-25T08:12:04Z",
+      "audit_id": "8e5a2a42-4200-4d42-a0fc-9dcb43d8e014",
+      "status_code": "SUCCESS",
+      "message": "Git account provisioned"
+    }
+  }
+]

@@ -1,0 +1,44 @@
+[project]
+name = "agent-claude-gpt51"
+version = "0.1.0"
+description = "LangChain DeepAgents onboarding backend"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dashscope>=1.20.4",
+    "httpx>=0.28.1",
+    "langchain>=1.1.0",
+    "langchain-experimental>=0.0.60",
+    "langgraph>=1.0.3",
+    "modelcontextprotocol>=0.1.0",
+    "pydantic>=2",
+    "python-dotenv>=1.2.1",
+    "sqlmodel>=0.0.27",
+    "tenacity>=9.1.2",
+    "typer>=0.20.0",
+]
+
+[tool.uv]
+managed = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.black]
+line-length = 100
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.typer]
+pretty_exceptions_enable = true
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.407",
+    "pytest>=9.0.1",
+    "ruff>=0.14.6",
+]

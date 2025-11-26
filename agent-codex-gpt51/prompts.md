@@ -4,7 +4,10 @@
 
 # create feature agent backend specify
 
-构建一个简单的标准化的 新员工入职引导多智能体 后端系统，使用 langchain 下的 deepagents 作为整体框架
+构建一个简单的标准化的 新员工入职引导多智能体 后端系统，使用 langchain 下的 deepagents 作为整体框架，
+目录结构
+src/
+main.py
 
 # 员工入职流程
 

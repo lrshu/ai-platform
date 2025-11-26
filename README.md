@@ -6,13 +6,16 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 npm install -g @anthropic-ai/claude-code
 
-# 我要实现一个 RAG 开发平台
+# 初始化开发环境，准备好测试和代码检查的依赖
 
 ```
 proxy
-specify init ai-platform
+specify init ai-platform --no-git
 cd ai-platform
 uv init
+uv add --dev ruff
+uv add --dev pyright
+uv add --dev pytest
 uv sync
 source .venv/bin/activate
 ```
@@ -66,3 +69,10 @@ codex  --dangerously-bypass-approvals-and-sandbox
 9. 可维护性：维护性越高，得分越高
 
 以表格形式输出各智能体的评估指标后，在 eval.md 文档后面，给出每个智能体的每个指标得分的原因。
+
+# spec-kit 使用注意问题
+
+1. 一个 git 仓库下使用多个工程时，添加--no-git 参数，否则 git 分支可能混乱
+2. 使用 chatgpt5.1、gemini3 时， /speckit.implement 执行总是中断，需要一直守着，继续执行,有时无法继续，可能原因如下：
+   1. GPT-5.1：倾向于进行深度思考（Extended Thinking），这会导致它花费大量时间在“思考”阶段，从而导致前端等待超时。如果任务过于复杂，它可能会陷入循环调试，最终导致连接断开。
+   2. Gemini 3-Pro：目前的预览版被指出存在“懒惰（Laziness）”问题。为了节省计算资源，它在生成长代码块时倾向于中断，或者只生成部分代码（例如只写注释 // ...rest of the code），导致 Spec Kit 无法解析完整的变更，从而抛出错误或中断进程。
