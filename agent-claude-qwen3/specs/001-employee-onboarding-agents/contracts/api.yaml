@@ -1,0 +1,312 @@
+# Employee Onboarding API Contract
+
+## Overview
+REST API for the employee onboarding multi-agent system.
+
+## Base URL
+`/api/v1/onboarding`
+
+## Authentication
+No authentication required for initial onboarding process.
+
+## Common Headers
+- `Content-Type: application/json`
+- `Accept: application/json`
+
+## Error Responses
+All endpoints may return the following error responses:
+
+```json
+{
+  "error": {
+    "code": "string",
+    "message": "string",
+    "details": {}
+  }
+}
+```
+
+## Endpoints
+
+### Start Onboarding Session
+Initialize a new onboarding session for an employee.
+
+#### Request
+`POST /sessions`
+
+```json
+{
+  "employee": {
+    "first_name": "string",
+    "last_name": "string"
+  }
+}
+```
+
+#### Response
+```json
+{
+  "session_id": "uuid",
+  "employee_id": "uuid",
+  "checklist": {
+    "id": "uuid",
+    "identity_verified": false,
+    "information_collected": false,
+    "responsibilities_shown": false,
+    "permissions_granted": false,
+    "post_tasks_reminded": false,
+    "completed": false
+  },
+  "next_step": "upload_id_photo"
+}
+```
+
+#### Status Codes
+- 201 Created - Session successfully created
+- 400 Bad Request - Invalid input data
+
+---
+
+### Upload ID Photo
+Upload an ID photo for verification.
+
+#### Request
+`POST /sessions/{session_id}/id-photo`
+
+Form-data with file attachment
+
+#### Response
+```json
+{
+  "photo_id": "uuid",
+  "verification_status": "pending",
+  "next_step": "awaiting_verification"
+}
+```
+
+#### Status Codes
+- 201 Created - Photo uploaded successfully
+- 400 Bad Request - Invalid file format or size
+- 404 Not Found - Session not found
+
+---
+
+### Get ID Verification Status
+Check the status of ID verification.
+
+#### Request
+`GET /sessions/{session_id}/id-photo/status`
+
+#### Response
+```json
+{
+  "verification_status": "verified|rejected|pending",
+  "verification_notes": "string|null",
+  "extracted_data": {
+    "first_name": "string",
+    "last_name": "string",
+    "id_number": "string"
+  }|null,
+  "next_step": "collect_information|retry_upload"
+}
+```
+
+#### Status Codes
+- 200 OK - Status retrieved successfully
+- 404 Not Found - Session or photo not found
+
+---
+
+### Collect Employee Information
+Submit employee personal information.
+
+#### Request
+`POST /sessions/{session_id}/information`
+
+```json
+{
+  "school": "string",
+  "education_level": "HIGH_SCHOOL|ASSOCIATE|BACHELOR|MASTER|DOCTORATE|OTHER",
+  "position": "string"
+}
+```
+
+#### Response
+```json
+{
+  "information_id": "uuid",
+  "validation_result": {
+    "valid": true,
+    "errors": []|[{ "field": "string", "message": "string" }]
+  },
+  "next_step": "show_responsibilities|correct_information"
+}
+```
+
+#### Status Codes
+- 201 Created - Information submitted
+- 400 Bad Request - Invalid input data
+- 404 Not Found - Session not found
+
+---
+
+### Get Position Responsibilities
+Retrieve responsibilities for the selected position.
+
+#### Request
+`GET /positions/{position_name}/responsibilities`
+
+#### Response
+```json
+{
+  "position": "string",
+  "responsibilities": "string",
+  "required_permissions": ["string"]
+}
+```
+
+#### Status Codes
+- 200 OK - Responsibilities retrieved
+- 404 Not Found - Position not found
+
+---
+
+### Request Account Provisioning
+Request provisioning of necessary accounts.
+
+#### Request
+`POST /sessions/{session_id}/accounts/provision`
+
+```json
+{
+  "account_types": ["email", "git"]
+}
+```
+
+#### Response
+```json
+{
+  "request_id": "uuid",
+  "status": "pending",
+  "credentials": [
+    {
+      "account_type": "email|git",
+      "status": "pending",
+      "username": "string|null"
+    }
+  ],
+  "next_step": "awaiting_provisioning"
+}
+```
+
+#### Status Codes
+- 201 Created - Provisioning request submitted
+- 400 Bad Request - Invalid account types
+- 404 Not Found - Session not found
+
+---
+
+### Get Account Provisioning Status
+Check the status of account provisioning.
+
+#### Request
+`GET /sessions/{session_id}/accounts/status`
+
+#### Response
+```json
+{
+  "credentials": [
+    {
+      "account_type": "email|git",
+      "status": "provisioned|failed|pending",
+      "username": "string|null",
+      "provisioned_at": "timestamp|null"
+    }
+  ],
+  "next_step": "complete_onboarding|retry_provisioning"
+}
+```
+
+#### Status Codes
+- 200 OK - Status retrieved successfully
+- 404 Not Found - Session not found
+
+---
+
+### Get Onboarding Checklist
+Retrieve current onboarding checklist status.
+
+#### Request
+`GET /sessions/{session_id}/checklist`
+
+#### Response
+```json
+{
+  "checklist": {
+    "id": "uuid",
+    "identity_verified": true|false,
+    "information_collected": true|false,
+    "responsibilities_shown": true|false,
+    "permissions_granted": true|false,
+    "post_tasks_reminded": true|false,
+    "completed": true|false
+  },
+  "next_step": "string"
+}
+```
+
+#### Status Codes
+- 200 OK - Checklist retrieved successfully
+- 404 Not Found - Session not found
+
+---
+
+### Complete Onboarding
+Mark the onboarding process as complete.
+
+#### Request
+`POST /sessions/{session_id}/complete`
+
+#### Response
+```json
+{
+  "completed": true,
+  "post_tasks": [
+    "Collect employee badge from HR",
+    "Report to department manager",
+    "Attend mandatory onboarding training"
+  ]
+}
+```
+
+#### Status Codes
+- 200 OK - Onboarding completed
+- 400 Bad Request - Prerequisites not met
+- 404 Not Found - Session not found
+
+---
+
+### Ask Question
+Ask a question about the onboarding process.
+
+#### Request
+`POST /sessions/{session_id}/ask`
+
+```json
+{
+  "question": "string"
+}
+```
+
+#### Response
+```json
+{
+  "answer": "string",
+  "related_topics": ["string"]
+}
+```
+
+#### Status Codes
+- 200 OK - Question answered
+- 400 Bad Request - Invalid question
+- 404 Not Found - Session not found

@@ -1,5 +1,5 @@
-"""Onboarding multi-agent system package."""
+"""LangGraph based onboarding assistant package."""
 
-from .app import run_cli
+from .main import OnboardingApp, build_app, run_cli
 
-__all__ = ["run_cli"]
+__all__ = ["OnboardingApp", "build_app", "run_cli"]

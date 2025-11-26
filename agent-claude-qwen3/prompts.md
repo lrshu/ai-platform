@@ -1,0 +1,59 @@
+# constitution
+
+制定以代码质量、测试标准、用户体验一致性及性能要求为核心的原则
+
+# create feature agent backend specify
+
+构建一个简单的标准化的 新员工入职引导多智能体 后端系统，使用 langchain 下的 deepagents 作为整体框架
+
+# 员工入职流程
+
+1. 员工身份验证：员工需上传身份证照片；
+2. 员工信息完善：包括毕业院校填写，学历选择，岗位选择；
+3. 宣讲岗位职责：根据员工信息和选择的岗位，检索输出对应的岗位职责；
+4. 开通权限： 行政岗位开通邮箱账号权限， IT 开发人员开通 git 账号权限，返回开通后的账号信息；
+5. 线上入职结束，提醒员工需完成的后续任务，包括领取工牌、找部门领导汇报、参加入职培训等；
+
+# 核心智能体角色说明
+
+为保证智能体完成以上入职流程，规划以下角色， 每个角色一个智能体
+
+1. 入职主管: 主智能体，负责规划和流转，员工提出入职申请时，给出入职说明和待处理的 checklist， 维护 Checklist 状态， 并可随时查看当前 checklist 状态，引导用户继续完成
+2. 身份验证: 引导员工上传身份证照片，使用 VL 模型验证照片是否正确，并提取身份信息，如果不正确，提示如何修正并重新上传
+3. 信息收集：一步一步引导员工填写相应的信息，比验证输入是否正确，如果错误，给出提示并引导用户重新输入
+4. 工具调用：MCP 工具调用智能体，根据需要，确定调用的工具，包括开通邮箱账号权限、开通 git 账号权限登工具
+5. 问题解答：问题解答智能体，根据需要，回答员工的提问，包括入职说明、岗位职责说明、后续任务说明等
+
+# 技术栈
+
+如果没有指定使用的技术方向，优先使用 deepagents 体系下的方式实现后续功能
+
+- **Runtime**: Python 3.12+ (uv)
+- **Framework**: deepagents
+- **LLM**: qwen3-max, qwen3-vl-max
+
+# 定义配置 .env
+
+```env
+# QWen Configuration
+QWEN_API_BASE=https://dashscope.aliyuncs.com/compatible-mode/v1
+QWEN_API_KEY="sk-**"
+
+# MCP server 地址
+MCP_SERVER="http://127.0.0.1:9012/mcp"
+
+# Langsmith
+LANGSMITH_API_KEY="**"
+LANGSMITH_PROJECT="default"
+```
+
+## main.py
+
+python main.py chat : 启动 langraph 智能体，开始聊天对话
+
+# create plans for agent backend feature
+
+实现所有需求
+生成.env 配置文件
+添加集成测试
+运行集成测试，根据测试结果修复问题

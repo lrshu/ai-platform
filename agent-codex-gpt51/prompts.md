@@ -4,10 +4,7 @@
 
 # create feature agent backend specify
 
-构建一个简单的标准化的 新员工入职引导多智能体 后端系统，使用 langchain 下的 deepagents 作为整体框架，
-目录结构
-src/
-main.py
+构建一个简单的标准化的 新员工入职引导多智能体 后端系统，使用 langgraph 作为整体框架
 
 # 员工入职流程
 
@@ -27,12 +24,17 @@ main.py
 4. 工具调用：MCP 工具调用智能体，根据需要，提供员工信息，确定调用的工具，包括开通邮箱账号权限、开通 git 账号权限登工具
 5. 问题解答：问题解答智能体，根据需要，回答员工的提问，包括入职说明、岗位职责说明、后续任务说明等
 
+# 目录结构
+
+src/
+main.py
+
 # 技术栈
 
-如果没有指定使用的技术方向，优先使用 deepagents 体系下的方式实现后续功能
+如果没有指定使用的技术方向，优先使用 langgraph 体系下的方式实现后续功能
 
 - **Runtime**: Python 3.12+ (uv)
-- **Framework**: deepagents
+- **Framework**: langgraph
 - **LLM**: qwen3-max, qwen3-vl-max
 
 # 定义配置 .env

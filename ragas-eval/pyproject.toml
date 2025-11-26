@@ -1,0 +1,12 @@
+[project]
+name = "ragas-eval"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ragas>=0.3.9",
+]
+
+[tool.uv.sources]
+ragas = { git = "https://github.com/explodinggradients/ragas" }

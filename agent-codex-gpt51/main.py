@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-from agent_codex_gpt51 import run_cli
+from src import run_cli
 
 
 def build_parser() -> argparse.ArgumentParser:
