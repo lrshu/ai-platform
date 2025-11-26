@@ -1,6 +1,6 @@
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable, Iterable, List, Any
+from typing import Callable, Iterable, List, Any, Optional
 from functools import partial
 
 from tqdm import tqdm
@@ -10,7 +10,7 @@ async def thread_pool_runner(
     tasks: Iterable[Any],
     max_workers: int = 5,
     *args,
-    progress_label: str | None = None,
+    progress_label: Optional[str] = None,
     **kwargs,
 ) -> List[Any]:
     """

@@ -1,20 +1,20 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Sequence
+from typing import List, Sequence, Optional, Dict, Any
 
 
 @dataclass
 class Chunk:
     content: str
-    metadata: dict | None = None
+    metadata: Optional[Dict[str, Any]] = None
 
 
 @dataclass
 class VectorRecord:
     content: str
     embedding: Sequence[float]
-    metadata: dict | None = None
+    metadata: Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -29,7 +29,7 @@ class GraphEdge:
 class RetrievalResult:
     content: str
     score: float
-    metadata: dict | None = None
+    metadata: Optional[Dict[str, Any]] = None
 
 
 @dataclass
