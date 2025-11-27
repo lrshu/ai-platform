@@ -1,5 +1,0 @@
-# Install
-
-```
-uv sync
-```
