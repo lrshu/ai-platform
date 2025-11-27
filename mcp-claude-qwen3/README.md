@@ -34,7 +34,7 @@ PORT=9102
 Start the server:
 
 ```bash
-python src/main.py
+python main.py
 ```
 
 The server will be available at `http://localhost:9102`

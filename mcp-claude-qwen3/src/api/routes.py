@@ -24,6 +24,7 @@ def setup_routes(app: FastAPI) -> None:
     """
 
     @app.post("/provision/email",
+              operation_id="provision_email",
               response_model=ProvisioningResponse,
               responses={400: {"model": ErrorResponse}, 422: {"model": ErrorResponse}},
               summary="Provision an email account",
@@ -41,6 +42,7 @@ def setup_routes(app: FastAPI) -> None:
             raise HTTPException(status_code=500, detail="Internal server error")
 
     @app.post("/provision/git",
+              operation_id="provision_git",
               response_model=ProvisioningResponse,
               responses={400: {"model": ErrorResponse}, 422: {"model": ErrorResponse}},
               summary="Provision a git account",
