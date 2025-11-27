@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 llm = get_llm()
 
-def generate_mcp_tool_eval_dataset():
+def generate():
     dataset = Dataset(
         name="mcp_tool_eval_dataset",
         backend="local/csv",

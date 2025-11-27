@@ -66,7 +66,7 @@ async def run_experiment(row):
             **row,
             "response": last_message.content,
             "log_file": result.get("logs", " "),
-            "tool_accuracy": tool_accuracy,
+            "accuracy": tool_accuracy,
         }
         return experiment_view
     except Exception as e:
@@ -75,13 +75,16 @@ async def run_experiment(row):
         raise e
 
 
-async def run_mcp_tools_experiment():
+async def run():
     dataset = load_dataset("mcp_tool_eval_dataset")
     print("dataset loaded successfully", dataset)
     experiment_results = await run_experiment.arun(dataset)
     print("Experiment completed successfully!")
     print("Experiment results:", experiment_results)
+    # experiment_results is list
 
+    avg_accuracy = sum([item["accuracy"] for item in experiment_results]) / len(experiment_results)
+    print("Average accuracy:", avg_accuracy)
     # Save experiment results to CSV
     experiment_results.save()
     csv_path = Path(".") / "experiments" / f"{experiment_results.name}.csv"
