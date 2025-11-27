@@ -76,7 +76,7 @@ async def run_experiment(row):
 
 
 async def run():
-    dataset = load_dataset("mcp_tool_eval_dataset")
+    dataset = load_dataset("mcp_tools_dataset")
     print("dataset loaded successfully", dataset)
     experiment_results = await run_experiment.arun(dataset)
     print("Experiment completed successfully!")

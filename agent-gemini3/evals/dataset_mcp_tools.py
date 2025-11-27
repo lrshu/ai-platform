@@ -12,7 +12,7 @@ llm = get_llm()
 
 def generate():
     dataset = Dataset(
-        name="mcp_tool_eval_dataset",
+        name="mcp_tools_dataset",
         backend="local/csv",
         root_dir="evals",
     )

@@ -24,3 +24,15 @@ dependencies = [
 
 [project.scripts]
 rag-cli = "main:cli"
+
+
+[dependency-groups]
+dev = [
+    "anyio>=4.7.0",
+    "langgraph-cli[inmem]>=0.4.7",
+    "mypy>=1.13.0",
+    "pytest>=8.3.5",
+    "ruff>=0.8.2",
+    "debugpy>=1.8.14",
+    "ragas>=0.3.9",
+]

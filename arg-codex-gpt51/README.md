@@ -35,5 +35,5 @@ uv run python main.py search --name codex-gpt51 --question "华为基本法的�
 To start a chat session with the indexed document, use the `chat` command:
 
 ```bash
-uv run python main.py chat --name codex-gpt51 --question "华为基本法的主要内容"
+uv run python main.py chat --name codex-gpt51 --question "华为基本法的主要内容" --top-k 5 --expand_query true --rerank true --use_vector true --use_graph true
 ```
