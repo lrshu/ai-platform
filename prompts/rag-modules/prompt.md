@@ -38,3 +38,9 @@
 - GET /documents: 获取所有文档
 - GET /documents/{document_id}: 获取指定文档
 - DELETE /documents/{document_id}: 删除指定文档
+
+# 请检查所有的 \*-specify.md 文件，确认是否有遗漏或错误
+
+# 修改 storage-specify.md 文件，增加所有实体结构的定义
+
+# provider-specify.md 文件，增加文档解析的支持， 在 indexing-specify.md 文件中, 直接使用 provider 提供的解析接口完成文档 loader 的调用
