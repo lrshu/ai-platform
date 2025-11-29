@@ -27,6 +27,8 @@ Provider 模块实现了 **Model-as-a-Service**。它将 LLM（大语言模型�
 - **`ParserClient.batch_parse(documents: List[RawDocument]) -> List[ParsedDocument]`**
   - 支持批量解析或多页解析，结合并发与速率控制。
 
+`ParsedDocument` 统一包含 `blocks`（段落/表格/标题）、`layout`（页码、坐标、reading order）与 `metadata`（language, checksum, parser_version），供 Indexing 模块直接进入切分/向量化流程并写回 Storage。
+
 #### 9.4 集成测试用例
 
 - **Case 1: 模型切换**
@@ -84,6 +86,12 @@ provider/
 │   ├── __init__.py
 │   ├── base.py
 │   └── openai_embedding.py
+├── parser/                 # Parser 适配器
+│   ├── __init__.py
+│   ├── base.py
+│   ├── unstructured_client.py
+│   ├── textract_client.py
+│   └── cache.py
 └── rerank/                 # Rerank 适配器
     ├── __init__.py
     ├── base.py             # 抽象 RerankClient
@@ -94,7 +102,8 @@ provider/
 #### 9.8 每个目录下 py 文件说明
 
 - **`provider/factory.py`**
-  - `get_llm_client()`, `get_embedding_client()`, `get_rerank_client()`：读取配置并缓存单例。
+  - `get_llm_client()`, `get_embedding_client()`, `get_rerank_client()`, `get_parser_client()`：读取配置并缓存单例。
+
 - **`provider/llm/base.py`**
   - `class BaseLLM`: 定义 `chat` 抽象接口。
 - **`provider/llm/litellm_wrapper.py`**
@@ -105,3 +114,12 @@ provider/
   - 组装 Cohere API 请求体，返回 `RerankResult`，支持多语言、批量。
 - **`provider/rerank/local_bge_rerank.py`**
   - 加载本地 Cross-Encoder（如 `BAAI/bge-reranker-large`），在 CPU/GPU 上执行批量打分。
+- **`provider/parser/base.py`**
+  - `class BaseParserClient`: 统一 `parse/batch_parse/stream_parse`，并定义 `ParsedDocument(blocks/layout/metadata)`。
+- **`provider/parser/unstructured_client.py`**
+  - 适配 Unstructured API，支持版式保留与分页并发。
+- **`provider/parser/textract_client.py`**
+  - 适配 AWS Textract 异步任务，轮询 job 状态并拉取表格/键值对结果。
+- **`provider/parser/cache.py`**
+  - 封装 checksum 缓存与 TTL，避免重复解析。
+```}Ljava? wait closing triple.*} need newline.*}
